@@ -56,6 +56,111 @@ data "aws_iam_policy_document" "codebuild-role-policy" {
     ]
     resources = [aws_kms_key.s3_kms_key.arn]
   }
+  statement {
+    actions = [
+      "cloudformation:List*",
+      "cloudformation:Get*",
+      "cloudformation:ValidateTemplate"
+    ]
+    resources = [
+      "*"
+    ]
+  }
+  statement {
+    actions = [
+      "cloudformation:CreateStack",
+      "cloudformation:CreateUploadBucket",
+      "cloudformation:DeleteStack",
+      "cloudformation:Describe*",
+      "cloudformation:UpdateStack"
+    ]
+    resources = [
+      "arn:aws:cloudformation:ap-southeast-2:*:stack/test-serverless-project-*/*"
+    ]
+  }
+  statement {
+    actions = [
+      "lambda:Get*",
+      "lambda:List*",
+      "lambda:CreateFunction"
+    ]
+    resources = [
+      "*"
+    ]
+  }
+  statement {
+    actions = [
+      "s3:GetBucketLocation",
+      "s3:CreateBucket",
+      "s3:DeleteBucket",
+      "s3:ListBucket",
+      "s3:ListBucketVersions",
+      "s3:PutAccelerateConfiguration",
+      "s3:GetEncryptionConfiguration",
+      "s3:PutEncryptionConfiguration"
+    ]
+    resources = [
+      "arn:aws:s3:::test-serverless-project*serverlessdeploy*"
+    ]
+  }
+  statement {
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:DeleteObject"
+    ]
+    resources = [
+      "arn:aws:s3:::test-serverless-project*serverlessdeploy*"
+    ]
+  }
+  statement {
+    actions = [
+      "lambda:AddPermission",
+      "lambda:CreateAlias",
+      "lambda:DeleteFunction",
+      "lambda:InvokeFunction",
+      "lambda:PublishVersion",
+      "lambda:RemovePermission",
+      "lambda:Update*"
+    ]
+    resources = [
+      "arn:aws:lambda:ap-southeast-2:*:function:test-serverless-project-*-*"
+    ]
+  }
+  statement {
+    actions = [
+      "apigateway:GET",
+      "apigateway:POST",
+      "apigateway:PUT",
+      "apigateway:DELETE",
+      "apigateway:PATCH"
+    ]
+    resources = [
+      "arn:aws:apigateway:*::/restapis*",
+      "arn:aws:apigateway:*::/apikeys*",
+      "arn:aws:apigateway:*::/usageplans*"
+    ]
+  }
+  statement {
+    actions = [
+      "iam:PassRole"
+    ]
+    resources = [
+      "arn:aws:iam::*:role/*"
+    ]
+  }
+  statement {
+    actions = [
+      "iam:GetRole",
+      "iam:CreateRole",
+      "iam:PutRolePolicy",
+      "iam:DeleteRolePolicy",
+      "iam:DeleteRole"
+    ]
+    resources = [
+      "arn:aws:iam::*:role/test-serverless-project-*-ap-southeast-2-lambdaRole"
+    ]
+  }
 }
 
 resource "aws_iam_role_policy" "codebuild_role_policy" {
