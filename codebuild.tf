@@ -90,28 +90,21 @@ data "aws_iam_policy_document" "codebuild-role-policy" {
   }
   statement {
     actions = [
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:DeleteObject",
       "s3:GetBucketLocation",
       "s3:CreateBucket",
       "s3:DeleteBucket",
       "s3:ListBucket",
       "s3:ListBucketVersions",
-      "s3:GetBucketPolicy"
-      "s3:GetBucketPolicyStatus"
-      "s3:PutBucketPolicy"
-      "s3:DeleteBucketPolicy"
+      "s3:GetBucketPolicy",
+      "s3:GetBucketPolicyStatus",
+      "s3:PutBucketPolicy",
+      "s3:DeleteBucketPolicy",
       "s3:PutAccelerateConfiguration",
       "s3:GetEncryptionConfiguration",
       "s3:PutEncryptionConfiguration"
-    ]
-    resources = [
-      "arn:aws:s3:::test-serverless-project*serverlessdeploy*"
-    ]
-  }
-  statement {
-    actions = [
-      "s3:PutObject",
-      "s3:GetObject",
-      "s3:DeleteObject"
     ]
     resources = [
       "arn:aws:s3:::test-serverless-project*serverlessdeploy*"
