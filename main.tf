@@ -86,9 +86,10 @@ resource "aws_codepipeline" "codepipeline" {
       output_artifacts = ["source_output"]
 
       configuration = {
-        Owner  = "chrismckinnel-leaven"
-        Repo   = "test-cloudformation-repo"
-        Branch = "master"
+        Owner      = "chrismckinnel-leaven"
+        Repo       = "test-cloudformation-repo"
+        Branch     = "master"
+        OAuthToken = var.GITHUB_OAUTH_TOKEN
       }
     }
   }
