@@ -95,6 +95,10 @@ data "aws_iam_policy_document" "codebuild-role-policy" {
       "s3:DeleteBucket",
       "s3:ListBucket",
       "s3:ListBucketVersions",
+      "s3:GetBucketPolicy"
+      "s3:GetBucketPolicyStatus"
+      "s3:PutBucketPolicy"
+      "s3:DeleteBucketPolicy"
       "s3:PutAccelerateConfiguration",
       "s3:GetEncryptionConfiguration",
       "s3:PutEncryptionConfiguration"
