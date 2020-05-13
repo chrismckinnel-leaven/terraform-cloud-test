@@ -81,8 +81,30 @@ resource "aws_codepipeline" "codepipeline" {
 
       configuration = {
         Owner  = "chrismckinnel-leaven"
-        Repo   = "terraform-cloud-test"
+        Repo   = "test-cloudformation-repo"
         Branch = "master"
+      }
+    }
+  }
+
+  stage {
+    name = "Build"
+
+    action {
+      name             = "Build"
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      input_artifacts  = ["source_output"]
+      output_artifacts = ["build_output"]
+      version          = "1"
+
+      configuration = {
+        ProjectName = "test",
+        EnvironmentVariables = {
+          name  = "CODEPIPELINE_BUCKET",
+          value = "${aws_s3_bucket.codepipeline_bucket.id}"
+        }
       }
     }
   }
