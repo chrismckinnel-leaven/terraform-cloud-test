@@ -44,6 +44,16 @@ data "aws_iam_policy_document" "codebuild-role-policy" {
       "${aws_s3_bucket.codebuild_bucket.arn}/*",
     ]
   }
+  statement {
+    actions = [
+      "kms:GenerateDataKey",
+      "kms:GenerateDataKeyPair",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:Decrypt"
+    ]
+    resources = [aws_kms_key.s3_kms_key.arn]
+  }
 }
 
 resource "aws_iam_role_policy" "codebuild_role_policy" {
