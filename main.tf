@@ -4,7 +4,7 @@ resource "aws_s3_bucket" "codepipeline_bucket" {
 }
 
 resource "aws_iam_role" "codepipeline_role" {
-  name = "test-role"
+  name = "codepipeline-role"
 
   assume_role_policy = data.aws_iam_policy_document.codepipeline-assume-role-policy.json
 }
