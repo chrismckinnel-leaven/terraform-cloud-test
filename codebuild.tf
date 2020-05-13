@@ -23,6 +23,7 @@ data "aws_iam_policy_document" "codebuild-assume-role-policy" {
 data "aws_iam_policy_document" "codebuild-role-policy" {
   statement {
     actions = [
+      "logs:DescribeLogGroups",
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents"
