@@ -24,7 +24,7 @@ data "aws_iam_policy_document" "codepipeline-role-policy" {
   statement {
     actions = [
       "codebuild:BatchGetBuilds",
-      "codebuild:StartBuild"
+      "codebuild:StartBuild",
     ]
     resources = ["*"]
   }
@@ -34,20 +34,20 @@ data "aws_iam_policy_document" "codepipeline-role-policy" {
       "s3:GetObject",
       "s3:GetObjectVersion",
       "s3:GetBucketVersioning",
-      "s3:PutObject"
+      "s3:PutObject",
     ]
     resources = [
-      "${aws_s3_bucket.codepipeline_bucket.arn}",
-      "${aws_s3_bucket.codepipeline_bucket.arn}/*"
+      aws_s3_bucket.codepipeline_bucket.arn,
+      "${aws_s3_bucket.codepipeline_bucket.arn}/*",
     ]
   }
 }
 
 resource "aws_iam_role_policy" "codepipeline_policy" {
   name = "codepipeline_policy"
-  role = "${aws_iam_role.codepipeline_role.id}"
+  role = aws_iam_role.codepipeline_role.id
 
-  policy = "${data.aws_iam_policy_document.codepipeline-role-policy.json}"
+  policy = data.aws_iam_policy_document.codepipeline-role-policy.json
 }
 
 resource "aws_kms_key" "s3_kms_key" {
@@ -57,19 +57,19 @@ resource "aws_kms_key" "s3_kms_key" {
 
 resource "aws_kms_alias" "s3_kms_key_alias" {
   name          = "alias/codepipeline-key"
-  target_key_id = "${aws_kms_key.s3_kms_key.key_id}"
+  target_key_id = aws_kms_key.s3_kms_key.key_id
 }
 
 resource "aws_codepipeline" "codepipeline" {
   name     = "tf-test-pipeline"
-  role_arn = "${aws_iam_role.codepipeline_role.arn}"
+  role_arn = aws_iam_role.codepipeline_role.arn
 
   artifact_store {
-    location = "${aws_s3_bucket.codepipeline_bucket.bucket}"
+    location = aws_s3_bucket.codepipeline_bucket.bucket
     type     = "S3"
 
     encryption_key {
-      id   = "${aws_kms_alias.s3_kms_key_alias.arn}"
+      id   = aws_kms_alias.s3_kms_key_alias.arn
       type = "KMS"
     }
   }
@@ -106,11 +106,11 @@ resource "aws_codepipeline" "codepipeline" {
       version          = "1"
 
       configuration = {
-        ProjectName = "test",
+        ProjectName = "test"
         EnvironmentVariables = jsonencode([
           {
             name  = "CODEPIPELINE_BUCKET",
-            value = "${aws_s3_bucket.codepipeline_bucket.id}"
+            value = aws_s3_bucket.codepipeline_bucket.id
             type  = "PLAINTEXT"
           }
         ])
@@ -118,3 +118,4 @@ resource "aws_codepipeline" "codepipeline" {
     }
   }
 }
+
