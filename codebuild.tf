@@ -23,6 +23,17 @@ data "aws_iam_policy_document" "codebuild-assume-role-policy" {
 data "aws_iam_policy_document" "codebuild-role-policy" {
   statement {
     actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+
+    ]
+    resources = [
+      "*"
+    ]
+  }
+  statement {
+    actions = [
       "s3:GetObject",
       "s3:GetObjectVersion",
       "s3:GetBucketVersioning",
