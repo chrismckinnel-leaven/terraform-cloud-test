@@ -50,8 +50,18 @@ resource "aws_iam_role_policy" "codepipeline_policy" {
   policy = "${data.aws_iam_policy_document.codepipeline-role-policy.json}"
 }
 
+resource "aws_kms_key" "codepipeline_kms_key" {
+  description             = "Test KMS key"
+  deletion_window_in_days = 10
+}
+
+resource "aws_kms_alias" "codepipeline_kms_key_alias" {
+  name          = "alias/codepipeline-key"
+  target_key_id = "${aws_kms_key.codepipeline_kms_key.key_id}"
+}
+
 data "aws_kms_alias" "s3kmskey" {
-  name = "alias/myKmsKey"
+  name = "alias/codepipeline-key"
 }
 
 resource "aws_codepipeline" "codepipeline" {
