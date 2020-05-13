@@ -60,11 +60,6 @@ resource "aws_kms_alias" "s3_kms_key_alias" {
   target_key_id = "${aws_kms_key.s3_kms_key.key_id}"
 }
 
-data "aws_kms_alias" "s3kmskey" {
-  name = "alias/codepipeline-key"
-  arn  = "${aws_kms_alias.s3_kms_key_alias.arn}"
-}
-
 resource "aws_codepipeline" "codepipeline" {
   name     = "tf-test-pipeline"
   role_arn = "${aws_iam_role.codepipeline_role.arn}"
@@ -74,7 +69,7 @@ resource "aws_codepipeline" "codepipeline" {
     type     = "S3"
 
     encryption_key {
-      id   = "${data.aws_kms_alias.s3kmskey.arn}"
+      id   = "${aws_kms_alias.s3_kms_key_alias.arn}"
       type = "KMS"
     }
   }
