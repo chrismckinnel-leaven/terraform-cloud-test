@@ -101,10 +101,13 @@ resource "aws_codepipeline" "codepipeline" {
 
       configuration = {
         ProjectName = "test",
-        EnvironmentVariables = {
-          name  = "CODEPIPELINE_BUCKET",
-          value = "${aws_s3_bucket.codepipeline_bucket.id}"
-        }
+        EnvironmentVariables = jsonencode([
+          {
+            name  = "CODEPIPELINE_BUCKET",
+            value = "${aws_s3_bucket.codepipeline_bucket.id}"
+            type  = "PLAINTEXT"
+          }
+        ])
       }
     }
   }
